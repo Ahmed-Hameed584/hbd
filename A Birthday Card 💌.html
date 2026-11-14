@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>A Birthday Card 💌</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Dancing+Script:wght@600&family=Nunito:wght@400;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fdf1ea;
+      --paper: #fffaf5;
+      --ink: #4a3a40;
+      --soft: #8a747c;
+      --rose: #e58a9a;
+      --gold: #c9a15a
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #2a2024;
+        --paper: #3a2d33;
+        --ink: #f8e9ee;
+        --soft: #c9b3bb
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #2a2024;
+      --paper: #3a2d33;
+      --ink: #f8e9ee;
+      --soft: #c9b3bb
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      min-height: 100%;
+      margin: 0
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: radial-gradient(circle at 50% 0%, #f8d5dc66, transparent 60%), var(--bg);
+      font-family: Nunito, system-ui, sans-serif;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(14px, 3vh, 22px);
+      padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+      overflow-x: hidden;
+      overflow-y: auto
+    }
+
+    .scene {
+      perspective: 1400px;
+      width: min(86vw, 340px);
+      aspect-ratio: 0.708;
+      flex: 0 0 auto;
+      cursor: pointer;
+      touch-action: manipulation
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1.1s cubic-bezier(.3, .8, .3, 1)
+    }
+
+    .scene.open .card {
+      transform: rotateY(180deg)
+    }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 18px;
+      box-shadow: 0 22px 50px #9a5a6a33;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+      overflow: hidden
+    }
+
+    .front {
+      background: linear-gradient(160deg, #ffd9e1, #ffc2cf 60%, #f8a9bb);
+      color: #7a3a4a
+    }
+
+    .front:before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 2px solid #ffffffaa;
+      border-radius: 12px
+    }
+
+    .front .art {
+      font-size: 5rem;
+      animation: bob 3s ease-in-out infinite
+    }
+
+    .front h1 {
+      /* font-family: 'Playfair Display', serif; */
+      font-family: 'Dancing Script', cursive;;
+      font-size: 2rem;
+      margin: 10px 0 4px
+    }
+
+    .front .cap {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem
+    }
+
+    .front small {
+      position: absolute;
+      bottom: 26px;
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      opacity: .8
+    }
+
+    .back {
+      background: var(--paper);
+      transform: rotateY(180deg);
+      color: var(--ink)
+    }
+
+    .back:before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1.5px dashed var(--gold);
+      border-radius: 12px;
+      opacity: .7
+    }
+
+    .back .to {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.7rem;
+      color: var(--rose)
+    }
+
+    .back h2 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      margin: 8px 0
+    }
+
+    .back p {
+      font-size: .98rem;
+      line-height: 1.7;
+      color: var(--soft);
+      margin: 6px 0
+    }
+
+    .back .sign {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: var(--rose);
+      margin-top: 10px
+    }
+
+    .back .flowers {
+      font-size: 1.4rem;
+      letter-spacing: .3em;
+      margin-top: 6px
+    }
+
+    @keyframes bob {
+      50% {
+        transform: translateY(-8px)
+      }
+    }
+
+    .bow {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 3rem;
+      animation: sway 3s ease-in-out infinite;
+      filter: drop-shadow(0 4px 6px #b3445f33)
+    }
+
+    @keyframes sway {
+      50% {
+        transform: translateX(-50%) rotate(6deg)
+      }
+    }
+
+    .spark {
+      position: absolute;
+      font-size: 1rem;
+      animation: twk 2.4s ease-in-out infinite
+    }
+
+    @keyframes twk {
+
+      0%,
+      100% {
+        opacity: .2;
+        transform: scale(.7)
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.2)
+      }
+    }
+
+    .corner {
+      position: absolute;
+      font-size: 1.6rem;
+      z-index: 1
+    }
+
+    .cake {
+      font-size: 2.6rem;
+      margin-top: 6px;
+      filter: drop-shadow(0 0 12px #ffd166aa);
+      animation: bob 3s ease-in-out infinite
+    }
+
+    .tip {
+      font-size: .8rem;
+      color: var(--soft);
+      letter-spacing: .14em;
+      text-transform: uppercase
+    }
+
+    .step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      text-align: center;
+      width: 100%
+    }
+
+    .step.on {
+      display: flex;
+      animation: fadein .7s
+    }
+
+    @keyframes fadein {
+      from {
+        opacity: 0;
+        transform: translateY(12px)
+      }
+    }
+
+    .h {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.7rem;
+      margin: 0
+    }
+
+    .sub {
+      color: var(--soft);
+      font-size: .95rem;
+      max-width: 300px;
+      line-height: 1.6;
+      margin: 0
+    }
+
+    .btn {
+      background: var(--rose);
+      color: #fff;
+      border: 0;
+      border-radius: 99px;
+      padding: 12px 28px;
+      font: 600 .95rem Nunito;
+      cursor: pointer;
+      box-shadow: 0 8px 20px #e58a9a55;
+      min-height: 44px;
+      touch-action: manipulation
+    }
+
+    .env {
+      position: relative;
+      width: min(280px, 78vw);
+      height: 184px;
+      background: linear-gradient(145deg, #fff0dc, #f8d7c8);
+      border: 1px solid #e8c4ad;
+      border-radius: 12px;
+      box-shadow: 0 22px 42px #9a5a6a2e, 0 5px 12px #9a5a6a14;
+      cursor: pointer;
+      animation: bob 3s ease-in-out infinite;
+      margin: 14px 0;
+      isolation: isolate;
+      transition: box-shadow .35s ease, filter .35s ease
+    }
+
+    @media (max-width: 480px) {
+      body {
+        gap: clamp(12px, 2.5vh, 18px);
+        padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))
+      }
+
+      .step {
+        gap: clamp(12px, 2.5vh, 18px)
+      }
+
+      .h {
+        font-size: clamp(1.4rem, 6vw, 1.7rem)
+      }
+
+      .sub {
+        max-width: min(300px, 90vw);
+        font-size: clamp(.88rem, 3.8vw, .95rem)
+      }
+
+      .scene {
+        width: min(88vw, 340px)
+      }
+
+      .face {
+        padding: clamp(16px, 5vw, 28px);
+        border-radius: 16px
+      }
+
+      .front .art {
+        font-size: clamp(3.8rem, 18vw, 5rem)
+      }
+
+      .front h1 {
+        font-size: clamp(1.65rem, 8vw, 2rem);
+        line-height: 1.12
+      }
+
+      .front .cap {
+        font-size: clamp(1.2rem, 6vw, 1.5rem)
+      }
+
+      .back .to {
+        font-size: clamp(1.4rem, 7vw, 1.7rem)
+      }
+
+      .back h2 {
+        font-size: clamp(1.25rem, 6vw, 1.6rem);
+        line-height: 1.25
+      }
+
+      .back p {
+        font-size: clamp(.82rem, 3.7vw, .98rem);
+        line-height: 1.5
+      }
+
+      .back .sign {
+        font-size: clamp(1.25rem, 6vw, 1.5rem)
+      }
+
+      .btn {
+        padding: 12px 24px
+      }
+
+      .big {
+        font-size: clamp(5rem, 24vw, 6rem)
+      }
+
+      .gift {
+        min-width: 64px;
+        min-height: 64px;
+        font-size: clamp(4.5rem, 22vw, 5.5rem)
+      }
+
+      .gnote {
+        width: min(100%, 340px);
+        padding: clamp(18px, 5vw, 22px)
+      }
+    }
+
+    @media (max-height: 480px) and (orientation: landscape) {
+      body {
+        justify-content: flex-start
+      }
+
+      .step {
+        padding-block: 8px
+      }
+
+      .scene {
+        width: min(56vw, calc((100dvh - 70px) * .708), 300px)
+      }
+
+      .face {
+        padding: 14px
+      }
+
+      .front .art {
+        font-size: 3.2rem
+      }
+
+      .front h1 {
+        font-size: 1.5rem
+      }
+
+      .front .cap {
+        font-size: 1.15rem
+      }
+
+      .front small {
+        bottom: 18px
+      }
+
+      .back .to {
+        font-size: 1.25rem
+      }
+
+      .back h2 {
+        font-size: 1.2rem;
+        margin: 4px 0
+      }
+
+      .back p {
+        font-size: .78rem;
+        line-height: 1.35;
+        margin: 3px 0
+      }
+
+      .back .sign {
+        font-size: 1.2rem;
+        margin-top: 4px
+      }
+    }
+
+    @media (hover: none) {
+      .env:hover {
+        box-shadow: 0 22px 42px #9a5a6a2e, 0 5px 12px #9a5a6a14;
+        filter: none
+      }
+
+      .env:not(.open):hover .seal {
+        transform: translate(-50%, -50%)
+      }
+    }
+
+    .env:hover {
+      box-shadow: 0 26px 48px #9a5a6a3d, 0 7px 16px #9a5a6a1a;
+      filter: saturate(1.05)
+    }
+
+    .env:focus-visible {
+      outline: 3px solid #d87888;
+      outline-offset: 7px
+    }
+
+    .env:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(145deg, #f8dfcb, #f2cdbd);
+      clip-path: polygon(0 0, 50% 57%, 100% 0, 100% 100%, 0 100%);
+      z-index: 2
+    }
+
+    .env:after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 1px solid #ffffff80;
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 6
+    }
+
+    .env .letter {
+      position: absolute;
+      left: 50%;
+      bottom: 13px;
+      width: 72%;
+      height: 138px;
+      padding-top: 20px;
+      border: 1px solid #f0dfd0;
+      border-radius: 7px 7px 3px 3px;
+      background: linear-gradient(180deg, #fffdf9, #fff7ed);
+      box-shadow: 0 3px 10px #805a4924;
+      color: #d77888;
+      text-align: center;
+      font: 1.6rem 'Dancing Script', cursive;
+      transform: translate(-50%, 48px);
+      transition: transform .8s cubic-bezier(.2, .8, .2, 1), box-shadow .8s ease;
+      z-index: 3
+    }
+
+    .env .letter:before {
+      content: "✿";
+      display: block;
+      color: #d99a86;
+      font: 1rem 'Nunito', sans-serif;
+      line-height: 1;
+      margin: 0 auto 7px
+    }
+
+    .env .letter:after {
+      content: "";
+      display: block;
+      width: 46%;
+      height: 1px;
+      margin: 7px auto;
+      background: #edd9ca
+    }
+
+    .env .flap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 104px;
+      background: linear-gradient(160deg, #ffead5, #f5d0bd);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top;
+      transition: transform .75s cubic-bezier(.2, .7, .2, 1);
+      z-index: 4
+    }
+
+    .env.open {
+      animation: none
+    }
+
+    .env.open .flap {
+      transform: rotateX(180deg);
+      z-index: 0
+    }
+
+    .env.open .letter {
+      transform: translate(-50%, -19px);
+      box-shadow: 0 8px 18px #805a492e
+    }
+
+    .env-detail {
+      position: absolute;
+      bottom: 13px;
+      color: #c28e68;
+      font-size: 1.1rem;
+      line-height: 1;
+      opacity: .8;
+      z-index: 4;
+      pointer-events: none
+    }
+
+    .env-detail.left {
+      left: 16px
+    }
+
+    .env-detail.right {
+      right: 16px
+    }
+
+    .seal {
+      position: absolute;
+      left: 50%;
+      top: 88px;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+      border: 2px solid #f8b5b6;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 28%, #f58d9d, #d94f6a 65%, #b83e58);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 1.45rem;
+      text-shadow: 0 1px 2px #8f2d4233;
+      box-shadow: 0 4px 10px #8f394340, inset 0 1px 2px #ffffff80;
+      z-index: 5;
+      outline: 1px solid #f7c5bd;
+      outline-offset: 3px;
+      transition: opacity .35s, transform .35s
+    }
+
+    .env:not(.open):hover .seal {
+      transform: translate(-50%, -50%) scale(1.06)
+    }
+
+    .env.open .seal {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.75)
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .env {
+        animation: none
+      }
+
+      .env,
+      .env .letter,
+      .env .flap,
+      .seal {
+        transition-duration: .01ms
+      }
+    }
+
+    .flame {
+      width: 16px;
+      height: 26px;
+      margin: 0 auto -8px;
+      background: radial-gradient(#fff, #ffd166 50%, #ff8a4c);
+      border-radius: 50% 50% 50% 50%/65% 65% 35% 35%;
+      box-shadow: 0 0 20px 8px #ffd16699;
+      animation: fl .3s infinite alternate
+    }
+
+    .flame.out {
+      opacity: 0;
+      animation: none;
+      box-shadow: none
+    }
+
+    @keyframes fl {
+      to {
+        transform: scale(1.1, .9)
+      }
+    }
+
+    .big {
+      font-size: 6rem;
+      line-height: 1
+    }
+
+    .gift {
+      font-size: 5.5rem;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      animation: wob 1.2s infinite
+    }
+
+    @keyframes wob {
+      25% {
+        transform: rotate(-8deg)
+      }
+
+      75% {
+        transform: rotate(8deg)
+      }
+    }
+
+    .gnote {
+      display: none;
+      background: var(--paper);
+      border: 1.5px dashed var(--gold);
+      border-radius: 16px;
+      padding: 22px;
+      max-width: 300px;
+      box-shadow: 0 14px 36px #9a5a6a2a;
+      animation: fadein .7s
+    }
+
+    .gnote b {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.6rem;
+      color: var(--rose);
+      display: block;
+      margin-bottom: 6px
+    }
+
+    .gnote span {
+      color: var(--soft);
+      line-height: 1.7;
+      font-size: .95rem
+    }
+
+    .petal {
+      position: fixed;
+      top: -20px;
+      pointer-events: none;
+      animation: fall linear forwards;
+      z-index: 9
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(300deg);
+        opacity: .3
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="step on" id="st1">
+    <div class="h">You have a letter 💌</div>
+    <p class="sub">someone made something small and sweet for you</p>
+    <div class="env" id="env" role="button" aria-label="Open your letter" aria-expanded="false" tabindex="0">
+      <div class="letter">For you</div>
+      <div class="flap"></div>
+
+      <span class="env-detail right" aria-hidden="true">✦</span>
+      <div class="seal">♡</div>
+    </div>
+    <div class="tip">tap the envelope to open</div>
+  </div>
+
+  <div class="step" id="st2">
+    <div class="scene" id="scene" role="button" aria-label="Open the card" tabindex="0">
+      <div class="card">
+        <div class="face front">
+          <div class="bow">🎀</div>
+          <span class="spark" style="top:16%;left:14%">✨</span>
+          <span class="spark" style="top:26%;right:12%;animation-delay:.6s">✨</span>
+          <span class="spark" style="top:62%;left:10%;animation-delay:1.2s">✨</span>
+          <span class="spark" style="top:70%;right:14%;animation-delay:1.8s">✨</span>
+          <div class="art">🧸</div>
+          <h1>Happy Birthday Areefa!</h1>
+          <div class="cap" id="fcap"></div>
+          <small>tap to open</small>
+        </div>
+        <div class="face back">
+          <span class="corner" style="top:16px;left:16px">🌸</span>
+          <span class="corner" style="top:16px;right:16px">🌼</span>
+          <span class="corner" style="bottom:16px;left:16px">🌷</span>
+          <span class="corner" style="bottom:16px;right:16px">🌸</span>
+          <div class="to" id="to"></div>
+          <h2 id="head"></h2>
+          <p id="l1"></p>
+          <p id="l2"></p>
+          <!-- <div class="cake">🎂</div> -->
+          <div class="sign" id="sign"></div>
+        </div>
+      </div>
+    </div>
+    <div class="tip" id="tip">a little card for you</div>
+    <button class="btn" id="nxt" style="display:none">Next ✿</button>
+  </div>
+
+  <div class="step" id="st3">
+    <div class="h">Make a wish ✨</div>
+    <p class="sub" id="wmsg">close your eyes, think of something you hope for, then tap the candle</p>
+    <div id="wc" style="cursor:pointer;touch-action:manipulation">
+      <div class="flame" id="flame"></div>
+      <div class="big">🎂</div>
+    </div>
+    <button class="btn" id="nxt2" style="display:none">One last surprise →</button>
+  </div>
+
+  <div class="step" id="st4">
+    <div class="h">A little gift 🎁</div>
+    <button class="gift" id="gift" aria-label="Open gift">🎁</button>
+    <div class="gnote" id="gnote"><b>For you</b><span>May your journey ahead be filled with beautiful memories,
+        unexpected blessings, endless laughter, and dreams that slowly turn into reality. Keep shining and stay happy
+        always.</span></div>
+    <button class="btn" id="again" style="display:none">Read it again ↺</button>
+  </div>
+
+  <script>
+    // ✏️ EDIT THESE to make it yours
+    const C = {
+      to: "Areefa,",
+      frontCaption: "a little something for you",
+      heading: "Wishing you the happiest day",
+      line1: "I hope your day is full of smiles, sweet treats and all the things that make your heart happy.",
+      line2: "May your life be filled with happiness, peace, and beautiful moments. Always stay the wonderful person you are ❤️.",
+      sign: "With warmest wishes"
+    };
+    const $ = s => document.querySelector(s);
+    $('#fcap').textContent = C.frontCaption; $('#to').textContent = C.to; $('#head').textContent = C.heading;
+    $('#l1').textContent = C.line1; $('#l2').textContent = C.line2; $('#sign').textContent = C.sign;
+
+    function petals() { for (let i = 0; i < 24; i++) { const p = document.createElement('div'); p.className = 'petal'; p.textContent = ['🌸', '🌷', '💗'][i % 3]; p.style.left = Math.random() * 100 + 'vw'; p.style.fontSize = (12 + Math.random() * 14) + 'px'; p.style.animationDuration = (4 + Math.random() * 4) + 's'; p.style.animationDelay = Math.random() * 1.5 + 's'; document.body.appendChild(p); setTimeout(() => p.remove(), 9500); } }
+    function toggle() { const o = $('#scene').classList.toggle('open'); $('#tip').textContent = o ? 'tap again to close' : 'a little card for you'; if (o) setTimeout(petals, 500); $('#nxt').style.display = o ? 'inline-block' : 'none'; }
+    $('#scene').onclick = toggle;
+    const go = id => document.querySelectorAll('.step').forEach(s => s.classList.toggle('on', s.id === id));
+    function openEnvelope() {
+      const env = $('#env');
+      if (env.classList.contains('open')) return;
+      env.classList.add('open');
+      env.setAttribute('aria-expanded', 'true');
+      setTimeout(() => go('st2'), 1100);
+    }
+    $('#env').onclick = openEnvelope;
+    $('#env').onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openEnvelope();
+      }
+    };
+    $('#nxt').onclick = () => go('st3');
+    $('#wc').onclick = () => { const f = $('#flame'); if (f.classList.contains('out')) return; f.classList.add('out'); $('#wmsg').textContent = 'your wish is on its way ✨'; petals(); $('#nxt2').style.display = 'inline-block'; };
+    $('#nxt2').onclick = () => go('st4');
+    $('#gift').onclick = () => { $('#gift').style.display = 'none'; $('#gnote').style.display = 'block'; $('#again').style.display = 'inline-block'; petals(); };
+    $('#again').onclick = () => location.reload();
+    $('#scene').onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } };
+  </script>
+</body>
+
+</html>
